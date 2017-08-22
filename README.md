@@ -1,6 +1,7 @@
 # UDACITY FSD PROJECT #5 - LINUX SERVER CONFIGURATION
 
 ## <TL;DR>
+- sh -i <location of awslightsail_udacity key>  grader@54.71.17.44 -p 2200
 - [http://54.71.17.44](http://54.71.17.44) (If I'm still paying for it)
 - Started Work. Drank Tea. Drank more tea. Debugged. Learned A lot. Had more tea. Read Blogs.
 - Contemplated life. Read more stack overflow and other tech blogs. Got it working.
