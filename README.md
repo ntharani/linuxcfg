@@ -1,7 +1,8 @@
-# UDACITY FSD PROJECT #5 - LINUX SERVER CONFIGURATION
+# LINUX Server Configuration Runbook
+(Udacity Project #5)
 
 ## <TL;DR>
-- sh -i <location of awslightsail_udacity key>  grader@54.71.17.44 -p 2200
+- `ssh -i <location of awslightsail_udacity key>  grader@54.71.17.44 -p 2200`
 - [http://54.71.17.44](http://54.71.17.44) (If I'm still paying for it)
 - Started Work. Drank Tea. Drank more tea. Debugged. Learned A lot. Had more tea. Read Blogs.
 - Contemplated life. Read more stack overflow and other tech blogs. Got it working.
@@ -44,6 +45,7 @@ It is required that your private key files are NOT accessible by others.
 This private key will be ignored.
 Load key "/Users/nagib/Downloads/LightsailDefaultPrivateKey-us-west-2.pem": bad permissions
 Permission denied (publickey).
+
 - fix it: `chmod 600 LightsailDefaultPrivateKey-us-west-2.pem`
 - You should be logged in at this point.
 
@@ -99,7 +101,6 @@ You won't be able to login as password authentication has been disabled.
 
 #### Transfering Public Key to New Server
 
-
 - login as <target user>, eg: grader: ssh grader@127.0.0.1. (Do this after you have SSH'd in as user ubuntu). 
 
 Hard Way:
@@ -153,14 +154,6 @@ Now logout and try again via SSH, you should not need a password login anymore. 
  news      | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
  postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
 
- template0 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
-           |          |          |             |             | postgres=CTc/postgres
- template1 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
-           |          |          |             |             | postgres=CTc/postgres
- vagrant   | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
-(6 rows)
-
-
 - postgres=# `SELECT rolname FROM pg_roles;`
 - `psql -d ndrinks` (Open a particular DB)
 - `\dd`
@@ -169,7 +162,7 @@ Now logout and try again via SSH, you should not need a password login anymore. 
 - `select * from information_schema.tables;`
 - `\conninfo`
 
-|rollname|
+|rollname |
 ----------
  postgres	|
  vagrant | 
@@ -180,8 +173,8 @@ Now logout and try again via SSH, you should not need a password login anymore. 
 - You may mess things up. I certainly did. Which means nuking the DB and restarting.
 - `sudo su postgres`
 - `psql`
-- DROP DATABASE <database name>
-- CREATE DATABASE <database name>
+- DROP DATABASE `<database name>`
+- CREATE DATABASE `<database name>` WITH OWNER `<owner name>`
 
 ### Flask, Apache and WSGI.
 
@@ -206,33 +199,33 @@ References:
 	5. Tail the apache log. You'll probably discover a bunch of stuff you need to fix/refactor in your app later.
 
 ### Git
-- Go grab your project. Don't worry about SSH here. Use HTTPS for git clone. Clone the repo under the Flask Project name. (Eg: /var/www/FlaskApache/<git cloned repo>
+- Go grab your project. Don't worry about SSH here. Use HTTPS for git clone. Clone the repo under the Flask Project name. (Eg: `/var/www/FlaskApache/<git cloned repo>`
 - In my case, I had made changes to accomodate postgres and general refactoring under a new branch remote called postgresv2. You can close a branch version (and rename it) by doing the following:
-- git clone <repo url> --branchname <rename of repo on clone>. In my case, FlaskApache 
+- `git clone <repo url> --branchname <rename of repo on clone>`. In my case, I named it `FlaskApache`
 
 ### Learn About PIP and VirtualENV (*)
 - https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/
 - https://springmerchant.com/bigcommerce/psycopg2-virtualenv-install-pg_config-executable-not-found/
 - ProTip: If you need to sudo anything while in a virtualEnv, take it as a warning of problems to come. You can usually fix 90% of the issues by making sure that virtual env directory has appropriate permissions.
 
-  497  `sudo virtualenv env`
-  498  `sudo chmod -R 777 env`
-  499  `source env/bin/activate`
-  500  `pip install Flask`
-  504  `sudo cp application.py __init__.py`
-  505  python __init__.py #does it work??
-  506  pip install -r requirements.txt
-  507  python __init__.py #does it work??
-  509  `sudo apt install libpq-dev python-dev`
-  510  python __init__.py #does it work??
-  514  `pip install psycopg2` 
-  515  python __init__.py #does it work??
-  516  `sudo service apache2 restart`
-  517  `sudo tail -f /var/log/apache2/error.log`
-  521  sudo chmod u+x FlaskApache.wsgi #possibly necessary
-  522  sudo service apache2 restart
+497.  `sudo virtualenv env`
+498.  `sudo chmod -R 777 env`
+499.  `source env/bin/activate`
+500.  `pip install Flask`
+504.  `sudo cp application.py __init__.py`
+505.  python __init__.py #does it work??
+506.  pip install -r requirements.txt
+507.  python __init__.py #does it work??
+509.  `sudo apt install libpq-dev python-dev`
+510.  python __init__.py #does it work??
+514.  `pip install psycopg2` 
+515.  python __init__.py #does it work??
+516.  `sudo service apache2 restart`
+517.  `sudo tail -f /var/log/apache2/error.log`
+521.  sudo chmod u+x FlaskApache.wsgi #possibly necessary
+522.  sudo service apache2 restart
   
-  later, rinse, repeat. Have some tea.
+lather, rinse, repeat. Have some tea.
 
 ### DrinksDB (Project #3/#4) Refactor
 - Figure out what your dependencies are. 3 options:
@@ -261,8 +254,8 @@ References:
 	- https://stackoverflow.com/questions/5033547/sqlalchemy-cascade-delete
 
 ### Postgres Bonus
-- You know that Users table you built in Project#3/#4?? The one with SQlite? The one that probably have no errors with queries but suddenly threw errors with Postgres? 
-- ** USERS is a reserved word. Avoid naming your tables as such. You can get around it by quoting "users" in your queries, but it's messy. I learned a lot. I've also lost more than a few hours that I won't get back. But I won't make this mistake again.
+- You remember that `Users` table you built in Project#3/#4?? The one with SQlite3? The one that probably have had no errors with queries but suddenly threw errors with Postgres? 
+- **USERS is a reserved word**. Avoid naming your tables as such. You can get around it by quoting "users" in your queries, but it's messy. I learned a lot. I've also lost more than a few hours that I won't get back. But I won't make this mistake again.
 - https://dba.stackexchange.com/questions/75551/returning-rows-in-postgresql-with-a-table-called-user
 
 ### Social Login (Project#3/#4)
@@ -272,7 +265,8 @@ References:
 - https://blog.appdynamics.com/engineering/a-performance-analysis-of-python-wsgi-servers-part-2/
 - bjoern looks really interesting.
 
-## Have a look. (Assuming I'm still paying for it): http://54.71.17.44
+## Have a look. 
+- (Assuming I'm still paying for it): [http://54.71.17.44](http://54.71.17.44)
 
 
  
