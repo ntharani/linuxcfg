@@ -72,7 +72,9 @@ Permission denied (publickey).
 - Ubuntu is different it references `/etc/sudoers.d` from above: `sudo ls /et/sudoers.d`
 - Don't create this file manually, use visudo.
 - `sudo visudo -f /etc/sudoers.d/<somefile>`
-- In the file, set `<user> ALL=(ALL:ALL) ALL`
+- In the file, set `<user> ALL=(ALL:ALL) ALL` (*) This will still require your password when accessing SUDO
+- If you don't want a password at all when using SUDO, then add in `NOPASSWD` attribute, eg:
+	- youruser ALL=(ALL) NOPASSWD: ALL
 
 References:
 - https://unix.stackexchange.com/questions/122087/what-is-the-best-way-to-add-a-user-to-the-sudoer-group
